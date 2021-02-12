@@ -19,9 +19,8 @@ class mrn_message{
         $this->register();
         $this->makemenus();
         $this->makesubmenus();
-
-      
-
+        $this->add_links();
+        $this->admin_bar_menu();
     }
     public function register()
     {
@@ -115,6 +114,30 @@ class mrn_message{
 
     public function setting_view(){
         require plugin_dir_path( __FILE__ ).'/views/setting.php';
+    }
+
+    public function add_links(){
+        add_filter("plugin_action_links_".plugin_basename(__FILE__),array($this,'setting_link'));
+    }
+
+    public function setting_link($links){
+        $links[]='<a href="'.admin_url('admin.php?page=setting').'">تنظیمات </a>';
+        return $links;
+    }
+
+    public function admin_bar_menu(){
+        add_action('admin_bar_menu',array($this,'add_bar_menu_func'),9999);
+    }
+
+    public function add_bar_menu_func(){
+        global $wp_admin_bar;
+        $args1=[
+            'parent' =>  'root-default',
+            'id'     =>  'mrn-my-menu',
+            'title'  =>  '<img src="'.plugins_url('/images/yes.png', __FILE__) .'">استایل سفارشی',
+            'href'   =>  admin_url('admin.php?page=custom_style'),
+        ];
+        $wp_admin_bar->add_menu()
     }
 }
 
