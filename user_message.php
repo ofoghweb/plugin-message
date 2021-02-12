@@ -21,6 +21,7 @@ class mrn_message{
         $this->makesubmenus();
         $this->add_links();
         $this->admin_bar_menu();
+        $this->admin_bar_menu_setting();
     }
     public function register()
     {
@@ -129,15 +130,50 @@ class mrn_message{
         add_action('admin_bar_menu',array($this,'add_bar_menu_func'),9999);
     }
 
+	public function admin_bar_menu_setting() {
+		add_action('admin_bar_menu',array($this,'add_bar_menu_func_setting'),9999);
+    }
+
     public function add_bar_menu_func(){
         global $wp_admin_bar;
         $args1=[
             'parent' =>  'root-default',
             'id'     =>  'mrn-my-menu',
-            'title'  =>  '<img src="'.plugins_url('/images/yes.png', __FILE__) .'">استایل سفارشی',
-            'href'   =>  admin_url('admin.php?page=custom_style'),
+            'title'  =>  '<img src="'.plugins_url('/images/marker.png', __FILE__) .'"> پیام کاربران',
+            'href'   =>  admin_url('admin.php?page=marn_message_inbox'),
         ];
-        $wp_admin_bar->add_menu()
+        $wp_admin_bar->add_menu($args1);
+
+	    $args2=[
+		    'parent' =>  'mrn-my-menu',
+		    'id'     =>  'mrn-msg-inbox',
+		    'title'  =>  '<img src="'.plugins_url('/images/marker.png', __FILE__) .'"> پیام های ارسالی',
+		    'href'   =>  admin_url('admin.php?page=sended_message'),
+	    ];
+	    $wp_admin_bar->add_menu($args2);
+
+	    $args3=[
+		    'parent' =>  'mrn-my-menu',
+		    'id'     =>  'mrn-msg-new',
+		    'title'  =>  '<img src="'.plugins_url('/images/marker.png', __FILE__) .'"> پیام  جدید',
+		    'href'   =>  admin_url('admin.php?page=new_message'),
+	    ];
+	    $wp_admin_bar->add_menu($args3);
+
+
+    }
+
+	public function add_bar_menu_func_setting() {
+		if(current_user_can('administrator')) {
+			global $wp_admin_bar;
+			$args4 = [
+				'parent' => 'mrn-my-menu',
+				'id'     => 'mrn-msg-setting',
+				'title'  => '<img src="' . plugins_url( '/images/marker.png', __FILE__ ) . '">   تنظیمات',
+				'href'   => admin_url( 'admin.php?page=setting' ),
+			];
+			$wp_admin_bar->add_menu( $args4 );
+		}
     }
 }
 
