@@ -84,7 +84,7 @@ class mrn_message{
     }
 
     public function sended_view(){
-        require plugin_dir_path( __FILE__ ).'/views/sended_message.php';
+        require plugin_dir_path( __FILE__ ).'/views/payam_karbaran.php';
     }
 
     public function new_message(){
